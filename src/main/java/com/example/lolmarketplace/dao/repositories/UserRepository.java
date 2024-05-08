@@ -1,7 +1,9 @@
 package com.example.lolmarketplace.dao.repositories;
 
-import com.example.lolmarketplace.dao.entities.Client;
+import com.example.lolmarketplace.dao.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ClientRepository extends JpaRepository<Client,String> {
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
 }

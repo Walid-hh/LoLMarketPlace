@@ -1,29 +1,43 @@
 package com.example.lolmarketplace.services;
 
-import com.example.lolmarketplace.dao.entities.Client;
-import com.example.lolmarketplace.dao.repositories.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.lolmarketplace.dao.entities.User;
+import com.example.lolmarketplace.dao.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
-public class ClientService implements ClientManager{
+public class UserService implements UserManager {
 
-    private ClientRepository clientRepository;
+    private UserRepository userRepository;
     @Override
-    public Client getClient(String id) {
-        Client client = clientRepository.findById(id).get();
-        return client;
+    public User getUser(int id) {
+        User user = userRepository.findById(id).get();
+        return user;
     }
 
     @Override
-    public List<Client> getClients() {
-        List<Client> clients = clientRepository.findAll();
-        return clients;
+    public List<User> getUsers() {
+        List<User> users = userRepository.findAll();
+        return users;
     }
 
     @Override
-    public Client addClient(Client client) {
-        return null;
+    public User addUser( User user) {
+
+        user = userRepository.save(user);
+        return user;
+
+    }
+
+    @Override
+    public Optional<User> updateUser(User user, int id) {
+        Optional<User> user1 = Optional.of(userRepository.findById(id).get());
+        if (user1.isPresent()){
+        user1 = Optional.of(userRepository.save((user)));
+        return user1;}
+        else {return null; }
+
     }
 }

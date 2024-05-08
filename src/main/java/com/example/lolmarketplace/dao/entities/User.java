@@ -14,15 +14,12 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @ToString
-public class Client {
+public class User {
+    private
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-private String id;
-private String username;
-private String email;
-private String firstName;
-private String lastName;
-private double phone;
-private String password;
-private Date birthdate;
+ String id;
+ String username;
+ String email;
+ String password;
 }

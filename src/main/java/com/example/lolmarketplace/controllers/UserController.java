@@ -1,2 +1,4 @@
-package com.example.lolmarketplace.controllers;public class UserController {
+package com.example.lolmarketplace.controllers;
+
+public class UserController {
 }

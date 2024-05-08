@@ -1,12 +1,13 @@
 package com.example.lolmarketplace.services;
 
-import com.example.lolmarketplace.dao.entities.Client;
+import com.example.lolmarketplace.dao.entities.User;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface ClientManager {
-    public Client getClient(String id);
-    public List<Client> getClients();
-    public Client addClient(Client client);
-
+public interface UserManager {
+    public User getUser(int id);
+    public List<User> getUsers();
+    public User addUser(User user);
+    public Optional<User> updateUser(User user, int id);
 }
