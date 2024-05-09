@@ -17,10 +17,12 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      int id;
+    
      String accountName;
      String details;
      String username;
      String password;
+     String email;
      double price;
      int sellerId;
 }

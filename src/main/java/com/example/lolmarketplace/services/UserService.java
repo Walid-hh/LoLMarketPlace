@@ -2,6 +2,7 @@ package com.example.lolmarketplace.services;
 
 import com.example.lolmarketplace.dao.entities.User;
 import com.example.lolmarketplace.dao.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,11 @@ import java.util.Optional;
 public class UserService implements UserManager {
 
     private UserRepository userRepository;
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public User getUser(int id) {
         User user = userRepository.findById(id).get();
