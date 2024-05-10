@@ -1,0 +1,16 @@
+@font-face {
+  font-family: Lig1;
+  src:url("BeaufortForLoL-OTF/BeaufortforLOL-Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: Lig2;
+  src:url("BeaufortForLoL-OTF/BeaufortforLOL-Medium.otf") format("opentype");
+}
+@font-face {
+  font-family: Lig3;
+  src:url("BeaufortForLoL-OTF/BeaufortforLOL-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: Lig4;
+  src:url("BeaufortForLoL-OTF/BeaufortforLOL-Light.otf") format("opentype");
+}
