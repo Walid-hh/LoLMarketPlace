@@ -10,6 +10,9 @@
     <div  class="container bg-lig1 mt-52 bg-opacity-90 mb-60 p-20 w-[700px] h-[600px]">
         <h2 class="font-lig1 text-lig2 text-6xl  mb-4">Welcome to LoLMarketPlace</h2>
         <h3 class="font-lig1 text-lig2 text-3xl  mb-4">Login</h3>
+        <th:block th:if="${param.error != null}">
+            <div class="text-red-700 font-lig1">Invalid username or password</div>
+        </th:block>
         <form th:action="@{/login}" method="post">
             <div class="mb-4">
                 <label for="username" class="block text-lig2 font-lig1 mb-2">Username</label>
