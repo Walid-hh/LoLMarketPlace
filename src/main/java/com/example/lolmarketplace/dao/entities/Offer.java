@@ -12,17 +12,14 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class Account {
+public class Offer {
     private
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      int id;
     
-     String accountName;
+     String offerName;
      String details;
-     String username;
-     String password;
-     String email;
      double price;
      int sellerId;
 }
