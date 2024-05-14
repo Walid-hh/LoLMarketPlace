@@ -8,7 +8,7 @@
     </head>
     <body class="bg-img1 bg-no-repeat bg-cover bg-center justify-center flex min-h-screen">
     <div  class="container bg-lig1 mt-52 bg-opacity-90 mb-60 p-20 w-[700px] h-[600px]">
-        <h2 class="font-lig1 text-lig2 text-6xl  mb-4">Welcome to LoLMarketPlace</h2>
+        <h2 class="font-lig1 text-lig2 text-6xl mb-4">Welcome to LoLMarketPlace</h2>
         <h3 class="font-lig1 text-lig2 text-3xl  mb-4">Login</h3>
         <th:block th:if="${param.error != null}">
             <div class="text-red-700 font-lig1">Invalid username or password</div>
@@ -24,7 +24,7 @@
             </div>
             <button type="submit" class="w-full bg-lig21 text-white py-2 px-4 rounded-md hover:bg-lig11 focus:outline-none focus:bg-lig3">Login</button>
             <div class="mt-4 flex justify-center">
-                <a th:href="@{/signup}" class="block text-lig21 font-lig1 align-middle mb-2 hover:text-lig11 rounded underline">already have an account? login</a>
+                <a th:href="@{/signup}" class="block text-lig21 font-lig1 align-middle mb-2 hover:text-lig11 rounded underline">don't have an account? sign up</a>
             </div>
         </form>
     </div>
