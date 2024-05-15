@@ -4,11 +4,17 @@ import com.example.lolmarketplace.dao.entities.Offer;
 import com.example.lolmarketplace.dao.repositories.OfferRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OfferServices implements OfferManager{
-    OfferRepository offerRepository;
+    private final OfferRepository offerRepository;
+
+    public OfferServices(OfferRepository offerRepository) {
+        this.offerRepository = offerRepository;
+    }
+
     @Override
     public Offer getOffer(String offerName) {
         return offerRepository.findByOfferName(offerName);
@@ -33,5 +39,11 @@ public class OfferServices implements OfferManager{
     @Override
     public void deleteOffer(String offerName) {
         offerRepository.deleteOfferByOfferName(offerName);
+    }
+
+    @Override
+    public List<Offer> getAllOffers() {
+        return offerRepository.findAll()
+                ;
     }
 }

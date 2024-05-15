@@ -1,9 +1,6 @@
 package com.example.lolmarketplace.dao.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -20,6 +17,8 @@ public class Offer {
     
      String offerName;
      String details;
-     double price;
-     int sellerId;
+     double price;;
+     @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 }

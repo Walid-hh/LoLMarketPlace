@@ -72,7 +72,6 @@ public class SecurityConfig {
     }
 
 
-
     private AuthenticationFailureHandler customAuthenticationFailureHandler() {
         return new SimpleUrlAuthenticationFailureHandler() {
             @Override
