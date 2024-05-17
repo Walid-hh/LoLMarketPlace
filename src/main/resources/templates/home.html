@@ -14,10 +14,10 @@
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
                 <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                     <li>
-                        <a th:href="@{signup}" class="btn font-lig2 block py-2 px-3 text-lig2 rounded hover:bg-lig21 hover:text-lig1 outline outline-lig21">SignUp</a>
+                        <a th:href="@{signup}" class="btn font-lig2 block py-2 px-3 text-lig2 rounded hover:bg-lig21 hover:text-lig1 outline outline-lig21 ">SignUp</a>
                     </li>
                     <li>
-                        <a th:href="@{login}" class="btn font-lig2 block py-2 px-3 text-lig2 rounded hover:bg-lig21 hover:text-lig1 outline outline-lig21">Log in</a>
+                        <a th:href="@{login}" class="btn font-lig2 block py-2 px-3 text-lig2 rounded hover:bg-lig21 hover:text-lig1 outline outline-lig21 ">Log in</a>
                     </li>
                 </ul>
             </div>
@@ -31,8 +31,16 @@
     <h1 class="font-lig1 text-lig21 brightness-125 text-3xl text-center  whitespace-nowrap mb-4">The best place where you can buy and sell your favorite league items</h1>
     </div>
 </div>
-<h2 class="text-lig21 text-4xl font-lig1 text-center p-2">Buy or sell any item you want at any given time</h2>
-<h1 class="text-lig21 text-2xl font-lig2 text-center p-2">Check out the latest offers in the market at the moment</h1>
+<div class="grid grid-cols-2 gap-4">
+    <div class="col-span-1">
+<h2 class="text-lig21 text-4xl font-lig1 ml-36 mt-40 p-2">Buy or sell any item you want at any given time :</h2>
+    </div>
+<div class="col-span-1 h-[400px] w-[250px] ml-32 flex items-center">
+    <img th:src="@{/images/borderskin2.jpg}" alt="skin1"  class="ml-auto object-contain  p-4">
+    <img th:src="@{/images/borderskin1.jpg}" alt="skin2"  class="ml-auto object-contain  p-4">
+</div>
+</div>
+<h1 class="text-lig21 text-2xl font-lig2 text-center mt-16 p-2">Check out the latest offers in the market at the moment</h1>
 <div class="flex container ml-32 p-12">
     <table class="table-auto w-full">
         <thead>
@@ -54,7 +62,7 @@
 <div class="flex flex-col container p-36 min-w-full">
     <h2 class="font-lig1 text-lig21 text-left text-6xl mb-4">Take a part of the market</h2>
     <div class="flex items-center">
-    <h1 class="font-lig1 text-lig21  text-3xl text-left w-full whitespace-nowrap mb-4">BUY and CREATE offers now and become part of our community NOW!! -------------------------></h1>
+    <h1 class="font-lig1 text-lig21  text-3xl text-left w-full whitespace-nowrap mb-4">BUY and CREATE offers now and become part of our community NOW!</h1>
     <a th:href="@{signup}" class="btn text-4xl font-lig2 block py-2 px-3 text-lig21 rounded hover:bg-lig21 hover:text-lig1 outline outline-lig21 ml-auto whitespace-nowrap">Sign Up</a>
     </div>
 </div>
