@@ -51,13 +51,13 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/login")
                 )
 
-                .authorizeRequests((requests) -> requests
-                        .requestMatchers(
-                                "/AddAccount", "/UpdateAccount"
-                        ).authenticated()
-                        .requestMatchers(
-                                "/index", "/", "/webjars/**", "/h2-console/**"
-                        ).permitAll()
+                    .authorizeRequests((requests) -> requests
+                            .requestMatchers(
+                                    "/AddAccount", "/UpdateAccount"
+                            ).authenticated()
+                            .requestMatchers(
+                                    "/index", "/", "/webjars/**", "/h2-console/**"
+                            ).permitAll()
                 )
                 .userDetailsService(userLogin)
                 .formLogin((form) -> form

@@ -14,3 +14,48 @@
   font-family: Lig4;
   src:url("BeaufortForLoL-OTF/BeaufortforLOL-Light.otf") format("opentype");
 }
+
+package com.example.lolmarketplace;
+
+import com.example.lolmarketplace.dao.entities.Offer;
+import com.example.lolmarketplace.dao.entities.User;
+import com.example.lolmarketplace.services.OfferServices;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@SpringBootApplication
+public class LoLMarketPlaceApplication implements CommandLineRunner {
+    private final OfferServices offerServices;
+
+    public LoLMarketPlaceApplication(OfferServices offerServices) {
+        this.offerServices = offerServices;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(LoLMarketPlaceApplication.class, args);
+    }
+    @Override
+    public void run(String... args) throws Exception {
+        // Replace the path with the actual path to your image file
+        Path imagePath = Paths.get("src/main/resources/static/images/borderskin1.jpg");
+        if (!Files.exists(imagePath)) {
+            System.err.println("Image file not found: " + imagePath.toAbsolutePath());
+            return;}
+        byte[] imageBytes = Files.readAllBytes(imagePath);
+
+        // Create a dummy user for the offer
+        User user = new User();
+        user.setId(2); // Assuming user with id 1 exists in the database
+
+
+        // Save the offer
+        Offer offer = offerServices.saveOfferWithImage("Woof and Lamb Kindred", "Woof and Lamb all chromas included.", 10.0, imageBytes, user);
+
+        System.out.println("Offer saved successfully with ID: " + offer.getId());
+    }
+}

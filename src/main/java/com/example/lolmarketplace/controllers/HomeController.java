@@ -19,8 +19,8 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(Model model) {
-        List<Offer> offers = offerServices.getAllOffers(); // Assume OfferService has a method to fetch all offers
+        List<Offer> offers = offerServices.getAllOffers();
         model.addAttribute("offers", offers);
-        return "home"; // Return the Thymeleaf template name for your homepage
+        return "home";
     }
 }

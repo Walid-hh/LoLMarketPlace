@@ -13,12 +13,12 @@ import lombok.*;
 @Getter
 @Setter
 public class Payment {
- private
+
  @Id
  @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    int transactionId;
-    double amount;
-    String status;
+ private int id;
+ private int transactionId;
+ private double amount;
+ private String status;
 
 }

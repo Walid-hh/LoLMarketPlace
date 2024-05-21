@@ -10,15 +10,16 @@ import lombok.*;
 @Getter
 @Setter
 public class Offer {
-    private
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     int id;
-    
-     String offerName;
-     String details;
-     double price;;
+    private int id;
+    private String offerName;
+    private String details;
+    private double price;
      @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
+    @Lob
+    @Column(name = "encodedImage", length = 65535)
+    private String encodedImage;
 }

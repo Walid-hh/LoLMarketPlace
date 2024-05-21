@@ -13,11 +13,10 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class User {
-    private
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
- int id;
- String username;
- String email;
- String password;
+private int id;
+private String username;
+private String email;
+private String password;
 }

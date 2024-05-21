@@ -5,8 +5,8 @@
     <title>LoLMarketPlace</title>
     <link th:href="@{output.css}" rel="stylesheet">
 </head>
-<header class="bg-lig1 bg-opacity-30 ">
-    <nav >
+<header class="bg-lig1 ">
+    <nav>
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a th:href="@{home}" class="flex items-center ">
                 <span class="self-center text-lig2 text-3xl font-lig1 whitespace-nowrap ">LoLMarketPlace</span>
@@ -45,6 +45,7 @@
     <table class="table-auto w-full">
         <thead>
         <tr>
+            <th class="border-4 border-lig21 font-lig2  text-lig21 py-2">image</th>
             <th class="border-4 border-lig21 font-lig2  text-lig21 px-0.5 py-2">Offer</th>
             <th class="border-4 border-lig21 font-lig2 text-lig21 px-4 py-2">Details</th>
             <th class="border-4 border-lig21 font-lig2 text-lig21 px-0.5 py-2">Price</th>
@@ -52,6 +53,10 @@
         </thead>
         <tbody>
         <tr th:each="offer : ${offers}">
+            <td class="border-4 border-lig21 font-lig2 text-white py-2 ">
+                <div class="flex justify-center">
+                    <img th:src="'data:image/png;base64,' + ${offer.encodedImage}" class="self-center w-40 h-72">
+                </div>
             <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.offerName}"></td>
             <td class="border-4 border-lig21 font-lig2 text-white px-4 py-2" th:text="${offer.details}"></td>
             <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.price} + '$'"></td>
@@ -59,12 +64,12 @@
         </tbody>
     </table>
 </div>
-<div class="flex flex-col container p-36 min-w-full">
-    <h2 class="font-lig1 text-lig21 text-left text-6xl mb-4">Take a part of the market</h2>
-    <div class="flex items-center">
-    <h1 class="font-lig1 text-lig21  text-3xl text-left w-full whitespace-nowrap mb-4">BUY and CREATE offers now and become part of our community NOW!</h1>
-    <a th:href="@{signup}" class="btn text-4xl font-lig2 block py-2 px-3 text-lig21 rounded hover:bg-lig21 hover:text-lig1 outline outline-lig21 ml-auto whitespace-nowrap">Sign Up</a>
+    <div class="flex flex-col container p-36 min-w-full">
+        <h2 class="font-lig1 text-lig21 text-left text-6xl mb-4">Take a part of the market</h2>
+        <div class="flex items-center space-x-4 ">
+        <h1 class="font-lig1 text-lig21 text-3xl text-left underline whitespace-nowrap ">BUY and CREATE offers now and become part of our community NOW!</h1>
+        <a th:href="@{signup}" class=" text-3xl font-lig2 text-lig21 rounded hover:text-lig11 underline whitespace-nowrap ">Sign Up</a>
+        </div>
     </div>
-</div>
 </body>
 </html>
