@@ -20,6 +20,6 @@ public class Offer {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
     @Lob
-    @Column(name = "encodedImage", length = 65535)
+    @Column(name = "encodedImage", length = 65535,columnDefinition = "mediumtext")
     private String encodedImage;
 }
