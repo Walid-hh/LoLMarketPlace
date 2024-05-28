@@ -223,11 +223,15 @@
             </thead>
             <tbody>
             <tr th:each="completedOffer : ${completedOffers}">
-                <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2"><img th:src="'data:image/png;base64,' + ${completedOffer.encodedImage}" class="w-20 h-20" alt="Offer Image"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2">
+                    <div class="flex justify-center">
+                    <img th:src="'data:image/png;base64,' + ${completedOffer.encodedImage}" class="w-40 h-72" alt="Offer Image">
+                </div>
+                </td>
                 <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2" th:text="${completedOffer.offerName}"></td>
                 <td class="border-4 border-lig21 font-lig2 text-white px-4 py-2" th:text="${completedOffer.details}"></td>
                 <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2" th:text="${completedOffer.price} + '$'"></td>
-                <td class="border-4 border-lig21 font-lig2 text-white py-2" th:text="${#dates.format(completedOffer.transactionDateTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2" th:text="${#dates.format(completedOffer.transactionDateTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
             </tr>
             </tbody>
         </table>
