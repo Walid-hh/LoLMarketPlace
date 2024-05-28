@@ -9,6 +9,7 @@ public interface OfferManager {
     Offer getOffer(String offerName);
 
     Optional<Offer> updateOffer(Offer offer, String offerName);
+    Optional<Offer> getOfferById(int id);
 
     List<Offer> getAllOffers();
 

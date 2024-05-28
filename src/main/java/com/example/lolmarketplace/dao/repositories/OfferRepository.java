@@ -11,5 +11,6 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer,Integer> {
     Offer findByOfferName(String offerName);
 
+
     List<Offer> findByUser(User user);
 }

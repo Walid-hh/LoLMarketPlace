@@ -17,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class IndexController {
@@ -79,8 +81,7 @@ public class IndexController {
                            @RequestParam("offername") String offerName,
                            @RequestParam("details") String details,
                            @RequestParam("price") double price,
-                           @RequestParam("image") MultipartFile image,
-                           HttpSession session) throws IOException {
+                           @RequestParam("image") MultipartFile image) throws IOException {
         String username = authentication.getName();
         User user = userRepository.findByUsername(username).get();
         byte[] imageBytes = image.getBytes();
@@ -101,4 +102,38 @@ public class IndexController {
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/";
     }
+    @PostMapping("/update-offer/{offerId}")
+    public String updateOffer(
+            @PathVariable int offerId,
+            @RequestParam String offerName1,
+            @RequestParam String offerDetails,
+            @RequestParam double offerPrice,
+            @RequestParam("offerImage") MultipartFile offerImage, // Add this parameter for the image
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            Optional<Offer> optionalOffer = offerServices.getOfferById(offerId);
+            if (optionalOffer.isPresent()) {
+                Offer offer = optionalOffer.get();
+                offer.setOfferName(offerName1);
+                offer.setDetails(offerDetails);
+                offer.setPrice(offerPrice);
+
+                if (!offerImage.isEmpty()) {
+                    byte[] imageData = offerImage.getBytes();
+                    String encodedImage = Base64.getEncoder().encodeToString(imageData);
+                    offer.setEncodedImage(encodedImage);
+                }
+
+                offerRepository.save(offer);
+                redirectAttributes.addFlashAttribute("message", "Offer updated successfully!");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Offer update failed!");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating offer: " + e.getMessage());
+        }
+        return "redirect:/";
+    }
+
 }

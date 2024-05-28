@@ -20,6 +20,14 @@
                 formDiv.style.display = "none";
             }
         }
+        function toggleUpdateOfferForm() {
+            var formDiv = document.getElementById("updateOfferFormDiv");
+            if (formDiv.style.display === "none") {
+                formDiv.style.display = "block";
+            } else {
+                formDiv.style.display = "none";
+            }
+        }
         function toggleMainElement(elementId) {
             var mainElements = document.querySelectorAll(".main-element");
             mainElements.forEach(function(element) {
@@ -30,6 +38,24 @@
         function previewImage(event) {
             const input = event.target;
             const preview = document.getElementById('preview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(input.files[0]);
+                preview.classList.remove('hidden');
+            } else {
+                preview.src = '';
+                preview.classList.add('hidden');
+            }
+        }
+        function previewOfferImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('offerPreview');
 
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -56,7 +82,7 @@
                 <span class="text-lig2 text-3xl font-lig1 whitespace-nowrap">LoLMarketPlace</span>
             </a>
             <div class="flex flex-col items-end mr-28">
-                <p class="text-lig2 text-2xl font-lig2">Welcome, <span th:text="${session.username}"></span></p>
+                <p class="text-lig2 text-2xl font-lig2">Welcome<span th:text="${session.username}"></span>,Balance : <span th:text="${session.balance}+ '$'" ></span></p>
                 <a class="text-lig2 text-2xl underline hover:text-lig11 font-lig2" th:href="@{/logout}">Logout</a>
             </div>
         </div>
@@ -82,6 +108,9 @@
 </aside>
 <div id="market"  class="main-element ml-64 pt-24 ">
     <div class="max-w-full min-h-screen bg-white p-6 rounded-lg shadow-md">
+        <div th:if="${message}" >
+            <p th:text="${message}" class="bg-green-200 text-green-800 p-2 rounded-md mt-4"></p>
+        </div>
         <div class="bg-lig1 w-full justify-center flex">
             <h1 class="text-2xl font-lig1 text-lig21 underline mb-4">Offers Available In the Market</h1>
         </div>
@@ -136,6 +165,34 @@
                     <form th:action="@{/delete-offer/{offerId}(offerId=${offer.id})}" method="post">
                         <button type="submit" class="bg-lig1 text-lig21 border-2 border-lig21 rounded px-2 py-2">Delete</button>
                     </form>
+                        <button onclick="toggleUpdateOfferForm()" class="bg-lig21 text-white px-4 py-2 font-lig21 rounded-md hover:bg-lig11 mt-4">Edit Offer</button>
+                        <div id="updateOfferFormDiv" style="display: none" class="mt-4">
+                            <h2 class="text-xl font-semibold mt-6">Update Information</h2>
+                            <form th:action="@{/update-offer/{offerId}(offerId=${offer.id})}" method="post" class="mt-4" enctype="multipart/form-data">
+                                <div class="mb-4">
+                                    <input type="file" id="offerImage" name="offerImage" class="hidden" onchange="previewOfferImage(event)" required>
+                                    <label for="offerImage" class="btn text-white mt-1 hover:bg-lig11 focus:bg-lig3 cursor-pointer px-3 py-2 bg-lig21 outline rounded-md shadow-sm ">
+                                        Upload Image
+                                    </label>
+                                    <img id="offerPreview" class="hidden mt-2 w-40 h-72" alt="Preview Image">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="offerName1" class="block text-sm font-medium text-gray-700">Offer Name</label>
+                                    <input type="text" id="offerName1" name="offerName1" th:value="${offer.offerName}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="offerDetails" class="block text-sm font-medium text-gray-700">Details</label>
+                                    <input type="text" id="offerDetails" name="offerDetails" th:value="${offer.details}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="offerPrice" class="block text-sm font-medium text-gray-700">Price</label>
+                                    <input type="number" id="offerPrice" name="offerPrice" th:value="${offer.price}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                </div>
+                                <div class="flex items-center justify-end">
+                                    <button type="submit" class="bg-lig21 text-white px-4 py-2 rounded-md hover:bg-lig11">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
                 </th>
             </tr>
             </tbody>
@@ -144,16 +201,13 @@
 </div>
 <div id="profile" class="main-element ml-64 pt-24 " style="display: none">
     <div class="max-w-full min-h-screen bg-white p-6 rounded-lg shadow-md">
-        <div th:if="${message}" class="bg-green-200 text-green-800 p-2 rounded-md mt-4">
-            <p th:text="${message}"></p>
-        </div>
         <div class="container rounded border-4 border-lig1 w-1/3 p-4 bg-lig21">
         <h1 class="text-2xl font-lig1 text-lig1 underline mb-4">User Profile</h1>
         <p class="text-lig1 text-xl font-lig2">Username: <span th:text="${session.username}"></span></p>
         <p class="text-lig1 text-xl font-lig2">Email:<span th:text="${session.email}"></span></p>
             <p class="text-lig1 text-xl font-lig2">Balance:<span th:text="${session.balance} + '$'"></span></p>
         </div>
-        <button onclick="toggleUpdateForm()" class="bg-lig21 text-white px-4 py-2 font-lig21 rounded-md hover:bg-lig11 mt-4">Update Profile</button>
+        <button onclick="toggleUpdateForm()" class="bg-lig21 text-white px-4 py-2 font-lig21 rounded-md hover:bg-lig11 mt-4">Edit Profile</button>
 
         <div id="updateFormDiv" style="display: none" class="mt-4">
             <h2 class="text-xl font-semibold mt-6">Update Information</h2>

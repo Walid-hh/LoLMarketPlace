@@ -38,6 +38,11 @@ public class OfferServices implements OfferManager {
         }
     }
 
+    @Override
+    public Optional<Offer> getOfferById(int id) {
+        return offerRepository.findById(id);
+    }
+
 
     public void deleteOfferById(int offerId) {
         offerRepository.deleteById(offerId);
