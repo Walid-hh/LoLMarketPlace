@@ -1,17 +1,20 @@
 package com.example.lolmarketplace.controllers;
 
 import com.example.lolmarketplace.dao.entities.Offer;
+import com.example.lolmarketplace.dao.entities.CompletedOffer;
 import com.example.lolmarketplace.dao.entities.User;
+import com.example.lolmarketplace.dao.repositories.OfferRepository;
+import com.example.lolmarketplace.dao.repositories.CompletedOfferRepository;
 import com.example.lolmarketplace.dao.repositories.UserRepository;
 import com.example.lolmarketplace.services.OfferServices;
+import com.example.lolmarketplace.services.PaymentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,11 +22,18 @@ import java.util.List;
 @Controller
 public class IndexController {
     private final UserRepository userRepository;
-    private final OfferServices offerServices;
+    private final OfferRepository offerRepository;
 
-    public IndexController(UserRepository userRepository, OfferServices offerServices) {
+    private final CompletedOfferRepository completedOfferRepository;
+    private final OfferServices offerServices;
+    private final PaymentService paymentService;
+
+    public IndexController(UserRepository userRepository, OfferRepository offerRepository, CompletedOfferRepository completedOfferRepository, OfferServices offerServices, PaymentService paymentService) {
         this.userRepository = userRepository;
+        this.offerRepository = offerRepository;
+        this.completedOfferRepository = completedOfferRepository;
         this.offerServices = offerServices;
+        this.paymentService = paymentService;
     }
 
     @GetMapping("/")
@@ -34,13 +44,18 @@ public class IndexController {
             String name = user.getUsername();
             session.setAttribute("username", name);
         }
-        session.setAttribute("username", username);
+        session.setAttribute("userid", user.getId());
+        session.setAttribute("username", user.getUsername());
         session.setAttribute("email", user.getEmail());
+        session.setAttribute("balance", user.getBalance());
         //GetOffers
         List<Offer> offers = offerServices.getAllOffers();
         List<Offer> myOffers = offerServices.getOffersByUser(user);
         model.addAttribute("offers", offers);
         model.addAttribute("myOffers", myOffers);
+        model.addAttribute("currentUserId", user.getId());
+        List<CompletedOffer> completedOffers = completedOfferRepository.findByUser(user); // Adjust this according to your implementation
+        model.addAttribute("completedOffers", completedOffers);
         return "index";
     }
     @PostMapping("/update-profile")
@@ -72,10 +87,18 @@ public class IndexController {
         offerServices.saveOfferWithImage(offerName, details, price, imageBytes, user);
         return "redirect:/";
     }
-    @PostMapping("/delete-offer")
-    public String deleteOffer(@RequestParam("offerId") int offerId) {
+    @PostMapping("/delete-offer/{offerId}")
+    public String deleteOffer(@PathVariable int offerId) {
         offerServices.deleteOfferById(offerId);
-        return "redirect:/";
+        return "redirect:/"; // Redirect to the home page or wherever appropriate
     }
 
+
+    @PostMapping("/buy-offer/{offerId}")
+    public String buyOffer(@PathVariable int offerId, Authentication authentication, RedirectAttributes redirectAttributes) {
+        String username = authentication.getName();
+        String message = paymentService.processPayment(offerId, username);
+        redirectAttributes.addFlashAttribute("message", message);
+        return "redirect:/";
+    }
 }

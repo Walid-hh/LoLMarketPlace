@@ -45,32 +45,7 @@
                 preview.classList.add('hidden');
             }
         }
-        function deleteOffer(event) {
-            const offerId = event.target.closest("tr").dataset.offerId;
-            const confirmation = confirm("Are you sure you want to delete this offer?");
 
-            if (!confirmation) {
-                return; // Do nothing if user cancels deletion
-            }
-
-            fetch('/delete-offer/' + offerId, {
-                method: 'POST' // Change the method to POST since your controller expects POST requests
-            }).then(response => {
-                if (response.ok) {
-                    event.target.closest("tr").remove();
-                    // Optionally, provide feedback to the user
-                    alert("Offer deleted successfully.");
-                } else {
-                    // Handle errors, e.g., display an error message to the user
-                    alert("Failed to delete the offer. Please try again later.");
-                }
-            }).catch(error => {
-                // Handle network errors or other unexpected errors
-                console.error('Error deleting offer:', error);
-                alert("An unexpected error occurred. Please try again later.");
-            });
-
-        }
     </script>
 </head>
 <body class="bg-img1 bg-cover bg-center bg-no-repeat min-h-screen">
@@ -90,9 +65,6 @@
 <aside class="fixed top-0 left-0 h-full shadow-lg z-40 w-64 pt-20">
     <div class="flex flex-col h-full navbar-gradient2 pt-10">
         <nav class="flex-1 px-2 pb-4 pt-4 space-y-1">
-            <button onclick="toggleMainElement('profile')" class="text-lig21 font-lig2 group flex items-center px-2 py-4 text-xl w-56 font-medium hover:bg-lig11 rounded-md">
-                Profile
-            </button>
             <button onclick="toggleMainElement('market')" class="text-lig21 font-lig2 group flex items-center px-2 py-4 text-xl w-56 font-medium hover:bg-lig11 rounded-md">
                 Market
             </button>
@@ -102,63 +74,42 @@
             <button onclick="toggleMainElement('history')" class="text-lig21 font-lig2 group flex items-center px-2 py-4 text-xl w-56 font-medium hover:bg-lig11 rounded-md">
                 Transaction History
             </button>
+            <button onclick="toggleMainElement('profile')" class="text-lig21 font-lig2 group flex items-center px-2 py-4 text-xl w-56 font-medium hover:bg-lig11 rounded-md">
+                Profile
+            </button>
         </nav>
     </div>
 </aside>
-<div id="profile" class="main-element ml-64 pt-24 ">
-    <div class="max-w-full min-h-screen bg-white p-6 rounded-lg shadow-md">
-        <div class="container rounded border-4 border-lig1 w-1/3 p-4 bg-lig21">
-        <h1 class="text-2xl font-lig1 text-lig1 underline mb-4">User Profile</h1>
-        <p class="text-lig1 text-xl font-lig2">Username: <span th:text="${session.username}"></span></p>
-        <p class="text-lig1 text-xl font-lig2">Email:<span th:text="${session.email}"></span></p>
-        </div>
-        <button onclick="toggleUpdateForm()" class="bg-lig21 text-white px-4 py-2 font-lig21 rounded-md hover:bg-lig11 mt-4">Update Profile</button>
-
-        <div id="updateFormDiv" style="display: none" class="mt-4">
-            <h2 class="text-xl font-semibold mt-6">Update Information</h2>
-            <form th:action="@{/update-profile}" method="post" class="mt-4">
-                <div class="mb-4">
-                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                    <input type="text" id="username" name="newusername" th:value="${session.username}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="email" name="newemail" th:value="${session.email}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="flex items-center justify-end">
-                    <button type="submit" class="bg-lig21 text-white px-4 py-2 rounded-md hover:bg-lig11">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div id="market" style="display: none" class="main-element ml-64 pt-24 ">
+<div id="market"  class="main-element ml-64 pt-24 ">
     <div class="max-w-full min-h-screen bg-white p-6 rounded-lg shadow-md">
         <div class="bg-lig1 w-full justify-center flex">
             <h1 class="text-2xl font-lig1 text-lig21 underline mb-4">Offers Available In the Market</h1>
         </div>
-    <table class="table-auto min-w-full bg-lig1">
-        <thead>
-        <tr>
-            <th class="border-4 border-lig21 font-lig2  text-lig21 py-2">image</th>
-            <th class="border-4 border-lig21 font-lig2  text-lig21 px-0.5 py-2">Offer</th>
-            <th class="border-4 border-lig21 font-lig2 text-lig21 px-4 py-2">Details</th>
-            <th class="border-4 border-lig21 font-lig2 text-lig21 px-0.5 py-2">Price</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="offer : ${offers}">
-            <td class="border-4 border-lig21 font-lig2 text-white py-2 ">
-                <div class="flex justify-center">
-                <img th:src="'data:image/png;base64,' + ${offer.encodedImage}" class="self-center w-40 h-72">
-                </div>
-            <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.offerName}"></td>
-            <td class="border-4 border-lig21 font-lig2 text-white px-4 py-2" th:text="${offer.details}"></td>
-            <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.price} + '$'"></td>
-            <th class="border-4 border-lig21 font-lig2 text-lig21  "><button class="bg-green-600 text-white border-2 border-white px-4 py-2"> Buy </button> </th>
-        </tr>
-        </tbody>
-    </table>
+        <table class="table-auto min-w-full bg-lig1">
+            <thead>
+            <tr>
+                <th class="border-4 border-lig21 font-lig2  text-lig21 py-2">image</th>
+                <th class="border-4 border-lig21 font-lig2  text-lig21 px-0.5 py-2">Offer</th>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 px-4 py-2">Details</th>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 px-0.5 py-2">Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="offer : ${offers}">
+                <td class="border-4 border-lig21 font-lig2 text-white py-2 ">
+                    <div class="flex justify-center">
+                        <img th:src="'data:image/png;base64,' + ${offer.encodedImage}" class="self-center w-40 h-72">
+                    </div>
+                <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.offerName}"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white px-4 py-2" th:text="${offer.details}"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.price} + '$'"></td>
+                <th class="border-4 border-lig21 font-lig2 text-lig21  ">
+                    <form th:if="${offer.user.id} != ${session.userid}" th:action="@{/buy-offer/{offerId}(offerId=${offer.id})}" method="post">
+                        <button type="submit" class="bg-lig21 text-lig1 rounded px-4 py-2">Buy</button>
+                    </form>
+            </tr>
+            </tbody>
+        </table>
         <div class="bg-lig1 w-full justify-center flex">
             <h1 class="text-2xl font-lig1 text-lig21 underline mb-4">My Offers</h1>
         </div>
@@ -181,14 +132,45 @@
                 <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.offerName}"></td>
                 <td class="border-4 border-lig21 font-lig2 text-white px-4 py-2" th:text="${offer.details}"></td>
                 <td class="border-4 border-lig21 font-lig2 text-white px-0.5 py-2" th:text="${offer.price} + '$'"></td>
-                <td class="border-4 border-lig21 font-lig2 text-lig21 jus">
-                    <button onclick="deleteOffer(event)" class="bg-red-700 text-white border-2 border-white px-4 py-2">Delete</button>
-                </td>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 ">
+                    <form th:action="@{/delete-offer/{offerId}(offerId=${offer.id})}" method="post">
+                        <button type="submit" class="bg-lig1 text-lig21 border-2 border-lig21 rounded px-2 py-2">Delete</button>
+                    </form>
+                </th>
             </tr>
             </tbody>
         </table>
+    </div>
+</div>
+<div id="profile" class="main-element ml-64 pt-24 " style="display: none">
+    <div class="max-w-full min-h-screen bg-white p-6 rounded-lg shadow-md">
+        <div th:if="${message}" class="bg-green-200 text-green-800 p-2 rounded-md mt-4">
+            <p th:text="${message}"></p>
+        </div>
+        <div class="container rounded border-4 border-lig1 w-1/3 p-4 bg-lig21">
+        <h1 class="text-2xl font-lig1 text-lig1 underline mb-4">User Profile</h1>
+        <p class="text-lig1 text-xl font-lig2">Username: <span th:text="${session.username}"></span></p>
+        <p class="text-lig1 text-xl font-lig2">Email:<span th:text="${session.email}"></span></p>
+            <p class="text-lig1 text-xl font-lig2">Balance:<span th:text="${session.balance} + '$'"></span></p>
+        </div>
+        <button onclick="toggleUpdateForm()" class="bg-lig21 text-white px-4 py-2 font-lig21 rounded-md hover:bg-lig11 mt-4">Update Profile</button>
 
-
+        <div id="updateFormDiv" style="display: none" class="mt-4">
+            <h2 class="text-xl font-semibold mt-6">Update Information</h2>
+            <form th:action="@{/update-profile}" method="post" class="mt-4">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" name="newusername" th:value="${session.username}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="newemail" th:value="${session.email}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                </div>
+                <div class="flex items-center justify-end">
+                    <button type="submit" class="bg-lig21 text-white px-4 py-2 rounded-md hover:bg-lig11">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <div id="addoffer" style="display: none" class="main-element ml-64 pt-24 ">
@@ -223,6 +205,34 @@
             </div>
         </form>
     </div>
+</div>
+<div id="history" style="display: none" class="main-element ml-64 pt-24 ">
+    <div class="max-w-full min-h-screen bg-white p-6 rounded-lg shadow-md">
+        <div class="bg-lig1 w-full justify-center flex">
+            <h1 class="text-2xl font-lig1 text-lig21 underline mb-4">Transaction History</h1>
+        </div>
+        <table class="table-auto min-w-full bg-lig1">
+            <thead>
+            <tr>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 px-2 py-2">Image</th>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 px-2 py-2">Offer</th>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 px-4 py-2">Details</th>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 px-2 py-2">Price</th>
+                <th class="border-4 border-lig21 font-lig2 text-lig21 py-2">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="completedOffer : ${completedOffers}">
+                <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2"><img th:src="'data:image/png;base64,' + ${completedOffer.encodedImage}" class="w-20 h-20" alt="Offer Image"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2" th:text="${completedOffer.offerName}"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white px-4 py-2" th:text="${completedOffer.details}"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white px-2 py-2" th:text="${completedOffer.price} + '$'"></td>
+                <td class="border-4 border-lig21 font-lig2 text-white py-2" th:text="${#dates.format(completedOffer.transactionDateTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 </body>
 </html>
